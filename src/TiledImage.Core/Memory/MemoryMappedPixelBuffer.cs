@@ -169,11 +169,30 @@ public sealed class MemoryMappedPixelBuffer : IPixelBuffer
     /// <inheritdoc/>
     public void Dispose()
     {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
+    ~MemoryMappedPixelBuffer()
+    {
+        Dispose(disposing: false);
+    }
+
+    private void Dispose(bool disposing)
+    {
         if (_disposed) return;
         _disposed = true;
 
-        _accessor.Dispose();
-        _memoryMappedFile.Dispose();
+        if (disposing)
+        {
+            _accessor.Dispose();
+            _memoryMappedFile.Dispose();
+        }
+        else
+        {
+            try { _accessor.Dispose(); } catch { }
+            try { _memoryMappedFile.Dispose(); } catch { }
+        }
 
         if (!string.IsNullOrEmpty(_tempFilePath) && File.Exists(_tempFilePath))
         {
