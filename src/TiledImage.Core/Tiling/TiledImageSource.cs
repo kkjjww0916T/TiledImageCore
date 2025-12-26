@@ -1,4 +1,5 @@
-﻿using TiledImage.Core.Types;
+﻿using System.Buffers;
+using TiledImage.Core.Types;
 
 namespace TiledImage.Core.Tiling;
 
@@ -116,6 +117,48 @@ public class TiledImageSource : IDisposable
 
         var tile = new ImageTile(pixelX, pixelY, tileWidth, tileHeight, 0, PixelFormat);
         tile.SetPixelData(buffer);
+        return tile;
+    }
+
+    /// <summary>
+    /// Get a tile as ImageTile using pooled memory for pixel data.
+    /// The returned ImageTile should be disposed to return the buffer to the pool.
+    /// </summary>
+    public ImageTile? GetTilePooled(long tileX, long tileY)
+    {
+        return GetTilePooled(tileX, tileY, CurrentZ, ArrayPool<byte>.Shared);
+    }
+
+    /// <summary>
+    /// Get a tile as ImageTile using pooled memory for pixel data.
+    /// The returned ImageTile should be disposed to return the buffer to the pool.
+    /// </summary>
+    /// <param name="tileX">Tile X index</param>
+    /// <param name="tileY">Tile Y index</param>
+    /// <param name="z">Z slice index</param>
+    /// <param name="pool">Array pool for renting buffers</param>
+    /// <returns>ImageTile with pooled pixel data, or null if out of bounds</returns>
+    public ImageTile? GetTilePooled(long tileX, long tileY, long z, ArrayPool<byte> pool)
+    {
+        if (_disposed) return null;
+        if (pool == null) throw new ArgumentNullException(nameof(pool));
+
+        long pixelX = tileX * _tileSize;
+        long pixelY = tileY * _tileSize;
+
+        if (pixelX >= ImageWidth || pixelY >= ImageHeight || z < 0 || z >= ImageDepth)
+            return null;
+
+        int tileWidth = (int)Math.Min(_tileSize, ImageWidth - pixelX);
+        int tileHeight = (int)Math.Min(_tileSize, ImageHeight - pixelY);
+
+        int bufferSize = tileWidth * tileHeight * BytesPerPixel;
+        byte[] buffer = pool.Rent(bufferSize);
+
+        _provider.ReadTileData(pixelX, pixelY, z, tileWidth, tileHeight, buffer);
+
+        var tile = new ImageTile(pixelX, pixelY, tileWidth, tileHeight, 0, PixelFormat);
+        tile.SetPixelData(buffer, bufferSize, pool);
         return tile;
     }
 
