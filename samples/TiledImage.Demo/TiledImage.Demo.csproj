@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>TiledImage.Demo</RootNamespace>
+    <AssemblyName>TiledImage.Demo</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TiledImage.Core\TiledImage.Core.csproj" />
+    <ProjectReference Include="..\..\src\TiledImage.Formats.SkiaSharp\TiledImage.Formats.SkiaSharp.csproj" />
+    <ProjectReference Include="..\..\src\Geometry.Shapes\Geometry.Shapes.csproj" />
+    <ProjectReference Include="..\..\src\TiledImage.Transforms\TiledImage.Transforms.csproj" />
+    <ProjectReference Include="..\..\src\TiledImage.Wpf.Viewer\TiledImage.Wpf.Viewer.csproj" />
+    <ProjectReference Include="..\..\src\TiledImage.Wpf.Drawing\TiledImage.Wpf.Drawing.csproj" />
+    <ProjectReference Include="..\..\src\TiledImage.Wpf.Mapping\TiledImage.Wpf.Mapping.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,88 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TiledImage", "TiledImage", "{11111111-1111-1111-1111-111111111111}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TiledImage.Wpf", "TiledImage.Wpf", "{22222222-2222-2222-2222-222222222222}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Geometry", "Geometry", "{33333333-3333-3333-3333-333333333333}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{55555555-5555-5555-5555-555555555555}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiledImage.Core", "src\TiledImage.Core\TiledImage.Core.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiledImage.Formats.SkiaSharp", "src\TiledImage.Formats.SkiaSharp\TiledImage.Formats.SkiaSharp.csproj", "{CBA054DB-6E24-4098-ACEB-91C54DDB3AEF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiledImage.Wpf.Viewer", "src\TiledImage.Wpf.Viewer\TiledImage.Wpf.Viewer.csproj", "{C3D4E5F6-A7B8-9012-CDEF-123456789012}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiledImage.Wpf.Drawing", "src\TiledImage.Wpf.Drawing\TiledImage.Wpf.Drawing.csproj", "{007419D0-4FF6-4CA7-A5EE-1731CFBD2016}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiledImage.Wpf.Mapping", "src\TiledImage.Wpf.Mapping\TiledImage.Wpf.Mapping.csproj", "{46A4E816-C424-4086-BA66-C28B3363D0E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geometry.Primitives", "src\Geometry.Primitives\Geometry.Primitives.csproj", "{88888888-8888-8888-8888-888888888888}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geometry.Shapes", "src\Geometry.Shapes\Geometry.Shapes.csproj", "{E5F6A7B8-C9D0-1234-EF01-345678901234}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiledImage.Transforms", "src\TiledImage.Transforms\TiledImage.Transforms.csproj", "{AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiledImage.Demo", "samples\TiledImage.Demo\TiledImage.Demo.csproj", "{D4E5F6A7-B8C9-0123-DEF0-234567890123}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBA054DB-6E24-4098-ACEB-91C54DDB3AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBA054DB-6E24-4098-ACEB-91C54DDB3AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBA054DB-6E24-4098-ACEB-91C54DDB3AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBA054DB-6E24-4098-ACEB-91C54DDB3AEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{007419D0-4FF6-4CA7-A5EE-1731CFBD2016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{007419D0-4FF6-4CA7-A5EE-1731CFBD2016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{007419D0-4FF6-4CA7-A5EE-1731CFBD2016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{007419D0-4FF6-4CA7-A5EE-1731CFBD2016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46A4E816-C424-4086-BA66-C28B3363D0E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46A4E816-C424-4086-BA66-C28B3363D0E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46A4E816-C424-4086-BA66-C28B3363D0E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46A4E816-C424-4086-BA66-C28B3363D0E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88888888-8888-8888-8888-888888888888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88888888-8888-8888-8888-888888888888}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88888888-8888-8888-8888-888888888888}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88888888-8888-8888-8888-888888888888}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5F6A7B8-C9D0-1234-EF01-345678901234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5F6A7B8-C9D0-1234-EF01-345678901234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5F6A7B8-C9D0-1234-EF01-345678901234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5F6A7B8-C9D0-1234-EF01-345678901234}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890} = {11111111-1111-1111-1111-111111111111}
+		{CBA054DB-6E24-4098-ACEB-91C54DDB3AEF} = {11111111-1111-1111-1111-111111111111}
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012} = {22222222-2222-2222-2222-222222222222}
+		{007419D0-4FF6-4CA7-A5EE-1731CFBD2016} = {22222222-2222-2222-2222-222222222222}
+		{46A4E816-C424-4086-BA66-C28B3363D0E6} = {22222222-2222-2222-2222-222222222222}
+		{88888888-8888-8888-8888-888888888888} = {33333333-3333-3333-3333-333333333333}
+		{E5F6A7B8-C9D0-1234-EF01-345678901234} = {33333333-3333-3333-3333-333333333333}
+		{AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA} = {11111111-1111-1111-1111-111111111111}
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123} = {55555555-5555-5555-5555-555555555555}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Geometry.Shapes</RootNamespace>
+    <AssemblyName>Geometry.Shapes</AssemblyName>
+    <Description>UI-independent shape definitions and hit testing</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geometry.Primitives\Geometry.Primitives.csproj" />
+  </ItemGroup>
+
+</Project>

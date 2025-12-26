@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>TiledImage.Wpf.Mapping</RootNamespace>
+    <AssemblyName>TiledImage.Wpf.Mapping</AssemblyName>
+    <Description>WPF control for large image viewing with perspective transformation and overlay support</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp.Views.WPF" Version="3.119.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geometry.Primitives\Geometry.Primitives.csproj" />
+    <ProjectReference Include="..\TiledImage.Wpf.Viewer\TiledImage.Wpf.Viewer.csproj" />
+    <ProjectReference Include="..\TiledImage.Transforms\TiledImage.Transforms.csproj" />
+  </ItemGroup>
+
+</Project>

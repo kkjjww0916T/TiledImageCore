@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>TiledImage.Wpf.Drawing</RootNamespace>
+    <AssemblyName>TiledImage.Wpf.Drawing</AssemblyName>
+    <Description>WPF control for large image viewing with shape overlay support</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geometry.Primitives\Geometry.Primitives.csproj" />
+    <ProjectReference Include="..\TiledImage.Wpf.Viewer\TiledImage.Wpf.Viewer.csproj" />
+    <ProjectReference Include="..\Geometry.Shapes\Geometry.Shapes.csproj" />
+  </ItemGroup>
+
+</Project>

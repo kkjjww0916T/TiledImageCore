@@ -1,0 +1,136 @@
+﻿<Window x:Class="TiledImage.Demo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:TiledImage.Wpf.Viewer;assembly=TiledImage.Wpf.Viewer"
+        xmlns:mapping="clr-namespace:TiledImage.Wpf.Mapping;assembly=TiledImage.Wpf.Mapping"
+        xmlns:vm="clr-namespace:TiledImage.Demo.ViewModels"
+        mc:Ignorable="d"
+        Title="Large Image Viewer Demo"
+        Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.InputBindings>
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenFileCommand}"/>
+        <KeyBinding Key="OemPlus" Modifiers="Ctrl" Command="{Binding ZoomInCommand}"/>
+        <KeyBinding Key="OemMinus" Modifiers="Ctrl" Command="{Binding ZoomOutCommand}"/>
+        <KeyBinding Key="D0" Modifiers="Ctrl" Command="{Binding ResetZoomCommand}"/>
+        <KeyBinding Key="P" Command="{Binding TogglePerspectiveModeCommand}"/>
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveImageCommand}"/>
+    </Window.InputBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <ToolBarTray Grid.Row="0">
+            <ToolBar>
+                <Button Command="{Binding OpenFileCommand}" ToolTip="Open Image (Ctrl+O)">
+                    <TextBlock Text="Open"/>
+                </Button>
+                <Button x:Name="OpenDrawingButton" Click="OpenDrawingButton_Click" ToolTip="Open Drawing Control Demo">
+                    <TextBlock Text="Drawing"/>
+                </Button>
+                <Button x:Name="OpenTransformButton" Click="OpenTransformButton_Click" ToolTip="Open Transform Demo (Rotate, Crop, Scale, Flip)">
+                    <TextBlock Text="Transform"/>
+                </Button>
+                <Separator/>
+                <Button Command="{Binding ZoomInCommand}" ToolTip="Zoom In (Ctrl++)">
+                    <TextBlock Text="+"/>
+                </Button>
+                <Button Command="{Binding ZoomOutCommand}" ToolTip="Zoom Out (Ctrl+-)">
+                    <TextBlock Text="-"/>
+                </Button>
+                <Button Command="{Binding ResetZoomCommand}" ToolTip="Reset Zoom (Ctrl+0)">
+                    <TextBlock Text="100%"/>
+                </Button>
+                <Button x:Name="FitButton" Click="FitButton_Click" ToolTip="Fit to View">
+                    <TextBlock Text="Fit"/>
+                </Button>
+                <Separator/>
+                <TextBlock VerticalAlignment="Center" Margin="5,0">
+                    <Run Text="Zoom: "/>
+                    <Run Text="{Binding ZoomPercentage, Mode=OneWay}"/>
+                </TextBlock>
+                <Separator/>
+                <ToggleButton x:Name="PerspectiveToggle"
+                              IsChecked="{Binding IsPerspectiveMode}"
+                              ToolTip="Toggle Perspective Mode (P)"
+                              Padding="8,2">
+                    <TextBlock Text="Perspective"/>
+                </ToggleButton>
+                <Button Command="{Binding ResetPerspectiveCommand}"
+                        ToolTip="Reset Perspective Transform"
+                        IsEnabled="{Binding HasPerspectiveTransform}">
+                    <TextBlock Text="Reset"/>
+                </Button>
+                <Button x:Name="SaveButton"
+                        Click="SaveButton_Click"
+                        ToolTip="Save Transformed Image (Ctrl+S)"
+                        IsEnabled="{Binding IsImageLoaded}">
+                    <TextBlock Text="Save"/>
+                </Button>
+                <Separator/>
+                <Button Command="{Binding LoadOverlayCommand}" ToolTip="Load Overlay Image">
+                    <TextBlock Text="Overlay"/>
+                </Button>
+                <Button Command="{Binding ClearOverlayCommand}" ToolTip="Clear Overlay">
+                    <TextBlock Text="Clear"/>
+                </Button>
+                <ToggleButton IsChecked="{Binding IsOverlayVisible}"
+                              ToolTip="Toggle Overlay Visibility"
+                              Padding="8,2">
+                    <TextBlock Text="Show"/>
+                </ToggleButton>
+                <TextBlock VerticalAlignment="Center" Margin="5,0" Text="Opacity:"/>
+                <Slider Width="80"
+                        Minimum="0" Maximum="1"
+                        Value="{Binding OverlayOpacity}"
+                        ToolTip="Overlay Opacity"
+                        VerticalAlignment="Center"/>
+                <Separator/>
+                <TextBlock VerticalAlignment="Center" Margin="5,0" Text="Scale:"/>
+                <Slider Width="100"
+                        Minimum="1" Maximum="20"
+                        Value="{Binding OverlayScale}"
+                        TickFrequency="1"
+                        IsSnapToTickEnabled="True"
+                        ToolTip="Overlay Scale"
+                        VerticalAlignment="Center"/>
+                <TextBlock VerticalAlignment="Center" Margin="5,0"
+                           Text="{Binding OverlayScale, StringFormat={}{0:F1}x}"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <!-- Image Viewer -->
+        <mapping:ImageMappingControl x:Name="MappingControl"
+                                   Grid.Row="1"
+                                   ImageSource="{Binding ImageSource}"
+                                   Transform="{Binding Transform}"
+                                   Zoom="{Binding Zoom, Mode=TwoWay}"
+                                   IsPerspectiveMode="{Binding IsPerspectiveMode, Mode=TwoWay}"
+                                   OverlayImagePath="{Binding OverlayImagePath}"
+                                   OverlayOpacity="{Binding OverlayOpacity}"
+                                   OverlayScale="{Binding OverlayScale}"
+                                   IsOverlayVisible="{Binding IsOverlayVisible}"/>
+
+        <!-- Status Bar -->
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StatusText}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock>
+                    <Run Text="Zoom: "/>
+                    <Run Text="{Binding ZoomPercentage, Mode=OneWay}"/>
+                </TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

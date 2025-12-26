@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>TiledImage.Transforms</RootNamespace>
+    <AssemblyName>TiledImage.Transforms</AssemblyName>
+    <Description>Image transformation library - perspective, rotation, scale, crop, interpolation (no SkiaSharp)</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geometry.Primitives\Geometry.Primitives.csproj" />
+    <ProjectReference Include="..\TiledImage.Core\TiledImage.Core.csproj" />
+  </ItemGroup>
+
+</Project>

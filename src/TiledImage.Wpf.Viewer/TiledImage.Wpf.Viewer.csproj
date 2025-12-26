@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>TiledImage.Wpf.Viewer</RootNamespace>
+    <AssemblyName>TiledImage.Wpf.Viewer</AssemblyName>
+    <Description>WPF control for large image viewing with overlay and masking support</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp.Views.WPF" Version="3.119.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geometry.Primitives\Geometry.Primitives.csproj" />
+    <ProjectReference Include="..\TiledImage.Core\TiledImage.Core.csproj" />
+  </ItemGroup>
+
+</Project>

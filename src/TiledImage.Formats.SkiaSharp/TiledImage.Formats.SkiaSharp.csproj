@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>TiledImage.Formats.SkiaSharp</RootNamespace>
+    <AssemblyName>TiledImage.Formats.SkiaSharp</AssemblyName>
+    <Description>SkiaSharp-based image decoder and exporter for TiledImage</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="3.119.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TiledImage.Core\TiledImage.Core.csproj" />
+  </ItemGroup>
+
+</Project>

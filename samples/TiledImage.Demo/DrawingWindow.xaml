@@ -1,0 +1,227 @@
+﻿<Window x:Class="TiledImage.Demo.DrawingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:TiledImage.Wpf.Viewer;assembly=TiledImage.Wpf.Viewer"
+        xmlns:drawing="clr-namespace:TiledImage.Wpf.Drawing;assembly=TiledImage.Wpf.Drawing"
+        xmlns:local="clr-namespace:TiledImage.Demo"
+        xmlns:vm="clr-namespace:TiledImage.Demo.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:DrawingViewerViewModel}"
+        Title="Drawing Control Demo" Height="900" Width="1400"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <local:DepthToVisibilityConverter x:Key="DepthToVisibilityConverter"/>
+        <local:PointToStringConverter x:Key="PointToStringConverter"/>
+        <local:ZoomToPercentConverter x:Key="ZoomToPercentConverter"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <ToolBarTray Grid.Row="0">
+            <ToolBar>
+                <Button Command="{Binding OpenFileCommand}" ToolTip="Open TVRaw File">
+                    <TextBlock Text="Open"/>
+                </Button>
+                <Separator/>
+                <Button Command="{Binding ZoomInCommand}" ToolTip="Zoom In">
+                    <TextBlock Text="+"/>
+                </Button>
+                <Button Command="{Binding ZoomOutCommand}" ToolTip="Zoom Out">
+                    <TextBlock Text="-"/>
+                </Button>
+                <Button Command="{Binding ElementName=ViewerControl, Path=FitToViewCommand}" ToolTip="Fit to View">
+                    <TextBlock Text="Fit"/>
+                </Button>
+                <Button Command="{Binding ResetZoomCommand}" ToolTip="Reset Zoom (100%)">
+                    <TextBlock Text="100%"/>
+                </Button>
+                <Separator/>
+                <TextBlock VerticalAlignment="Center" Margin="5,0">
+                    <Run Text="Zoom: "/>
+                    <Run Text="{Binding ZoomPercentage, Mode=OneWay}"/>
+                </TextBlock>
+            </ToolBar>
+
+            <!-- Shape Creation Mode -->
+            <ToolBar>
+                <TextBlock VerticalAlignment="Center" Margin="5,0" FontWeight="Bold" Text="Draw:"/>
+                <RadioButton GroupName="CreationMode" Content="Select"
+                             IsChecked="{Binding IsSelectMode}" ToolTip="Select and move shapes"
+                             VerticalAlignment="Center" Margin="3,0"/>
+                <RadioButton GroupName="CreationMode" Content="Circle"
+                             IsChecked="{Binding IsCircleMode}" ToolTip="Draw circle (drag from center)"
+                             VerticalAlignment="Center" Margin="3,0"/>
+                <RadioButton GroupName="CreationMode" Content="Ellipse"
+                             IsChecked="{Binding IsEllipseMode}" ToolTip="Draw ellipse (drag diagonal)"
+                             VerticalAlignment="Center" Margin="3,0"/>
+                <RadioButton GroupName="CreationMode" Content="Rectangle"
+                             IsChecked="{Binding IsRectangleMode}" ToolTip="Draw rectangle (drag diagonal)"
+                             VerticalAlignment="Center" Margin="3,0"/>
+                <RadioButton GroupName="CreationMode" Content="Oblong"
+                             IsChecked="{Binding IsOblongMode}" ToolTip="Draw oblong (drag diagonal)"
+                             VerticalAlignment="Center" Margin="3,0"/>
+                <RadioButton GroupName="CreationMode" Content="Polygon"
+                             IsChecked="{Binding IsPolygonMode}" ToolTip="Draw polygon (click points, right-click to finish)"
+                             VerticalAlignment="Center" Margin="3,0"/>
+            </ToolBar>
+
+            <!-- Shape Actions -->
+            <ToolBar>
+                <TextBlock VerticalAlignment="Center" Margin="5,0" FontWeight="Bold" Text="Actions:"/>
+                <Button Command="{Binding AddCircleCommand}" ToolTip="Add Random Circle">
+                    <TextBlock Text="+ Circle"/>
+                </Button>
+                <Button Command="{Binding AddEllipseCommand}" ToolTip="Add Random Ellipse">
+                    <TextBlock Text="+ Ellipse"/>
+                </Button>
+                <Button Command="{Binding AddRectangleCommand}" ToolTip="Add Random Rectangle">
+                    <TextBlock Text="+ Rect"/>
+                </Button>
+                <Button Command="{Binding AddOblongCommand}" ToolTip="Add Random Oblong">
+                    <TextBlock Text="+ Oblong"/>
+                </Button>
+                <Button Command="{Binding AddPolygonCommand}" ToolTip="Add Random Polygon">
+                    <TextBlock Text="+ Polygon"/>
+                </Button>
+                <Separator/>
+                <Button Command="{Binding RotateSelectedCommand}" ToolTip="Rotate Selected Shape (+15°)">
+                    <TextBlock Text="Rotate"/>
+                </Button>
+                <Button Command="{Binding DeleteSelectedCommand}" ToolTip="Delete Selected Shape">
+                    <TextBlock Text="Delete"/>
+                </Button>
+                <Button Command="{Binding ClearAllShapesCommand}" ToolTip="Clear All Shapes">
+                    <TextBlock Text="Clear All"/>
+                </Button>
+                <Separator/>
+                <CheckBox IsChecked="{Binding IsShapeEditEnabled}"
+                          VerticalAlignment="Center" Margin="5,0"
+                          Content="Enable Edit"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Image Viewer with Drawing -->
+            <drawing:DrawingImageControl x:Name="ViewerControl" Grid.Column="0"
+                                          ImageSource="{Binding ImageSource}"
+                                          CurrentZ="{Binding CurrentZ, Mode=TwoWay}"
+                                          Zoom="{Binding Zoom, Mode=TwoWay}"
+                                          DisplayMin="{Binding DisplayMin}"
+                                          DisplayMax="{Binding DisplayMax}"
+                                          Shapes="{Binding Shapes}"
+                                          SelectedShapes="{Binding SelectedShapes}"
+                                          IsShapeEditEnabled="{Binding IsShapeEditEnabled}"
+                                          CreationMode="{Binding CreationMode, Mode=TwoWay}"
+                                          NewShapeStyle="{Binding NewShapeStyle}"
+                                          ShapeCreationRequestedCommand="{Binding ShapeCreationRequestedCommand}"
+                                          ShapeDeleteRequestedCommand="{Binding ShapeDeleteRequestedCommand}"
+                                          ShapeCopyRequestedCommand="{Binding ShapeCopyRequestedCommand}"
+                                          ShapePasteRequestedCommand="{Binding ShapePasteRequestedCommand}"/>
+
+            <!-- Side Panel (Z Slider + LUT) -->
+            <Border Grid.Column="1" Width="150" Background="#363636">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="10">
+                        <!-- Z Slider (3D only) -->
+                        <StackPanel Visibility="{Binding ElementName=ViewerControl, Path=ImageDepth, Converter={StaticResource DepthToVisibilityConverter}}">
+                            <TextBlock Text="Z Slice" Foreground="White" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Slider Grid.Column="0" Minimum="0" Maximum="{Binding MaxZ}"
+                                        Value="{Binding CurrentZ, Mode=TwoWay}"
+                                        IsEnabled="{Binding IsZSliderEnabled}"
+                                        TickFrequency="1" IsSnapToTickEnabled="True"/>
+                                <TextBlock Grid.Column="1" Foreground="White" VerticalAlignment="Center" Margin="5,0,0,0">
+                                    <Run Text="{Binding CurrentZ, Mode=OneWay}"/>
+                                    <Run Text="/"/>
+                                    <Run Text="{Binding MaxZ, Mode=OneWay}"/>
+                                </TextBlock>
+                            </Grid>
+                            <Separator Margin="0,10"/>
+                        </StackPanel>
+
+                        <!-- LUT Display Range -->
+                        <TextBlock Text="Display Range" Foreground="White" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Min (Black)" Foreground="White" Margin="0,0,0,3"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Grid.Column="0" Minimum="0" Maximum="{Binding DisplayRangeMax}"
+                                    Value="{Binding DisplayMin}" SmallChange="1" LargeChange="100"/>
+                            <TextBox Grid.Column="1" Margin="5,0,0,0"
+                                     Text="{Binding DisplayMin, UpdateSourceTrigger=PropertyChanged, StringFormat=F0}"/>
+                        </Grid>
+
+                        <TextBlock Text="Max (White)" Foreground="White" Margin="0,10,0,3"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Grid.Column="0" Minimum="0" Maximum="{Binding DisplayRangeMax}"
+                                    Value="{Binding DisplayMax}" SmallChange="1" LargeChange="100"/>
+                            <TextBox Grid.Column="1" Margin="5,0,0,0"
+                                     Text="{Binding DisplayMax, UpdateSourceTrigger=PropertyChanged, StringFormat=F0}"/>
+                        </Grid>
+
+                        <Button Content="Reset LUT" Margin="0,10,0,0" Padding="5,3"
+                                Command="{Binding ResetLutCommand}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- Status Bar -->
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StatusText}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding ImageInfoText}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock>
+                    <Run Text="Shapes: "/>
+                    <Run Text="{Binding Shapes.Count, Mode=OneWay}"/>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock>
+                    <Run Text="Selected: "/>
+                    <Run Text="{Binding SelectedShapes.Count, Mode=OneWay}"/>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock>
+                    <Run Text="Mouse: "/>
+                    <Run Text="{Binding ElementName=ViewerControl, Path=MouseImagePosition, Converter={StaticResource PointToStringConverter}, Mode=OneWay}"/>
+                </TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

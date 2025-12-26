@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Geometry.Primitives</RootNamespace>
+    <AssemblyName>Geometry.Primitives</AssemblyName>
+    <Description>Basic geometric types (Point2F, Matrix3x3) without external dependencies</Description>
+  </PropertyGroup>
+
+</Project>
