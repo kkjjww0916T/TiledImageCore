@@ -220,7 +220,7 @@ public class TransformPipeline
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                using var sliceBuffer = Execute(provider, z, BufferType.Unmanaged, null, cancellationToken);
+                using var sliceBuffer = Execute(provider, z, bufferType, null, cancellationToken);
                 CopySliceToBuffer(sliceBuffer, outputBuffer, z * sliceBytes, sliceBytes);
 
                 progress?.Report((double)(z + 1) / depth);
