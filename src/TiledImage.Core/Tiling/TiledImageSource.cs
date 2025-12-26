@@ -1,4 +1,5 @@
-﻿using TiledImage.Core.Types;
+﻿using System.Buffers;
+using TiledImage.Core.Types;
 
 namespace TiledImage.Core.Tiling;
 
@@ -120,6 +121,57 @@ public class TiledImageSource : IDisposable
     }
 
     /// <summary>
+    /// Get a tile as ImageTile using CurrentZ with pooled buffer allocation.
+    /// </summary>
+    /// <param name="tileX">Tile X index</param>
+    /// <param name="tileY">Tile Y index</param>
+    /// <param name="pool">Array pool for buffer reuse</param>
+    /// <returns>ImageTile with pooled pixel data, or null if out of bounds</returns>
+    public ImageTile? GetTile(long tileX, long tileY, ArrayPool<byte> pool)
+    {
+        return GetTile(tileX, tileY, CurrentZ, pool);
+    }
+
+    /// <summary>
+    /// Get a tile as ImageTile at specified Z slice with pooled buffer allocation.
+    /// </summary>
+    /// <param name="tileX">Tile X index</param>
+    /// <param name="tileY">Tile Y index</param>
+    /// <param name="z">Z slice index</param>
+    /// <param name="pool">Array pool for buffer reuse</param>
+    /// <returns>ImageTile with pooled pixel data, or null if out of bounds</returns>
+    public ImageTile? GetTile(long tileX, long tileY, long z, ArrayPool<byte> pool)
+    {
+        if (_disposed) return null;
+
+        long pixelX = tileX * _tileSize;
+        long pixelY = tileY * _tileSize;
+
+        if (pixelX >= ImageWidth || pixelY >= ImageHeight || z < 0 || z >= ImageDepth)
+            return null;
+
+        int tileWidth = (int)Math.Min(_tileSize, ImageWidth - pixelX);
+        int tileHeight = (int)Math.Min(_tileSize, ImageHeight - pixelY);
+        int bufferSize = tileWidth * tileHeight * BytesPerPixel;
+
+        byte[] buffer = pool.Rent(bufferSize);
+
+        try
+        {
+            _provider.ReadTileData(pixelX, pixelY, z, tileWidth, tileHeight, buffer);
+        }
+        catch
+        {
+            pool.Return(buffer);
+            throw;
+        }
+
+        var tile = new ImageTile(pixelX, pixelY, tileWidth, tileHeight, 0, PixelFormat);
+        tile.SetPixelData(buffer, bufferSize, pool);
+        return tile;
+    }
+
+    /// <summary>
     /// Read pixel data for a specific tile region using CurrentZ.
     /// </summary>
     public byte[]? GetTileData(long tileX, long tileY)
@@ -152,6 +204,67 @@ public class TiledImageSource : IDisposable
         byte[] buffer = new byte[bufferSize];
 
         _provider.ReadTileData(pixelX, pixelY, z, tileWidth, tileHeight, buffer);
+        return buffer;
+    }
+
+    /// <summary>
+    /// Read pixel data for a specific tile region into a pooled buffer using CurrentZ.
+    /// </summary>
+    /// <param name="tileX">Tile X index</param>
+    /// <param name="tileY">Tile Y index</param>
+    /// <param name="pool">Array pool for buffer reuse</param>
+    /// <param name="length">Output: actual data length in the pooled buffer</param>
+    /// <param name="tileWidth">Output: actual tile width</param>
+    /// <param name="tileHeight">Output: actual tile height</param>
+    /// <returns>Pooled buffer containing tile data, or null if out of bounds</returns>
+    public byte[]? GetTileData(long tileX, long tileY, ArrayPool<byte> pool,
+        out int length, out int tileWidth, out int tileHeight)
+    {
+        return GetTileData(tileX, tileY, CurrentZ, pool, out length, out tileWidth, out tileHeight);
+    }
+
+    /// <summary>
+    /// Read pixel data for a specific tile region into a pooled buffer at specified Z slice.
+    /// </summary>
+    /// <param name="tileX">Tile X index</param>
+    /// <param name="tileY">Tile Y index</param>
+    /// <param name="z">Z slice index</param>
+    /// <param name="pool">Array pool for buffer reuse</param>
+    /// <param name="length">Output: actual data length in the pooled buffer</param>
+    /// <param name="tileWidth">Output: actual tile width</param>
+    /// <param name="tileHeight">Output: actual tile height</param>
+    /// <returns>Pooled buffer containing tile data, or null if out of bounds</returns>
+    public byte[]? GetTileData(long tileX, long tileY, long z, ArrayPool<byte> pool,
+        out int length, out int tileWidth, out int tileHeight)
+    {
+        length = 0;
+        tileWidth = 0;
+        tileHeight = 0;
+
+        if (_disposed) return null;
+
+        long pixelX = tileX * _tileSize;
+        long pixelY = tileY * _tileSize;
+
+        if (pixelX >= ImageWidth || pixelY >= ImageHeight || z < 0 || z >= ImageDepth)
+            return null;
+
+        tileWidth = (int)Math.Min(_tileSize, ImageWidth - pixelX);
+        tileHeight = (int)Math.Min(_tileSize, ImageHeight - pixelY);
+        length = tileWidth * tileHeight * BytesPerPixel;
+
+        byte[] buffer = pool.Rent(length);
+
+        try
+        {
+            _provider.ReadTileData(pixelX, pixelY, z, tileWidth, tileHeight, buffer);
+        }
+        catch
+        {
+            pool.Return(buffer);
+            throw;
+        }
+
         return buffer;
     }
 

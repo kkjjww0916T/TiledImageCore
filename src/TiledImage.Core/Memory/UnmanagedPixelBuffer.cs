@@ -215,6 +215,17 @@ public sealed class UnmanagedPixelBuffer : IPixelBuffer
     /// <inheritdoc/>
     public void Dispose()
     {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
+    ~UnmanagedPixelBuffer()
+    {
+        Dispose(disposing: false);
+    }
+
+    private void Dispose(bool disposing)
+    {
         if (_disposed) return;
         _disposed = true;
 
