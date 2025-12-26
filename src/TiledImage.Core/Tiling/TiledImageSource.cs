@@ -1,4 +1,5 @@
-﻿using TiledImage.Core.Types;
+﻿using System.Buffers;
+using TiledImage.Core.Types;
 
 namespace TiledImage.Core.Tiling;
 
@@ -90,6 +91,14 @@ public class TiledImageSource : IDisposable
     }
 
     /// <summary>
+    /// Get a tile as ImageTile using CurrentZ with pooled buffer allocation.
+    /// </summary>
+    public ImageTile? GetTilePooled(long tileX, long tileY, ArrayPool<byte> pool)
+    {
+        return GetTilePooled(tileX, tileY, CurrentZ, pool);
+    }
+
+    /// <summary>
     /// Get a tile as ImageTile at specified Z slice.
     /// </summary>
     /// <param name="tileX">Tile X index</param>
@@ -117,6 +126,41 @@ public class TiledImageSource : IDisposable
         var tile = new ImageTile(pixelX, pixelY, tileWidth, tileHeight, 0, PixelFormat);
         tile.SetPixelData(buffer);
         return tile;
+    }
+
+    /// <summary>
+    /// Get a tile as ImageTile at specified Z slice with pooled buffer allocation.
+    /// </summary>
+    public ImageTile? GetTilePooled(long tileX, long tileY, long z, ArrayPool<byte> pool)
+    {
+        if (_disposed) return null;
+        if (pool == null) throw new ArgumentNullException(nameof(pool));
+
+        long pixelX = tileX * _tileSize;
+        long pixelY = tileY * _tileSize;
+
+        if (pixelX >= ImageWidth || pixelY >= ImageHeight || z < 0 || z >= ImageDepth)
+            return null;
+
+        int tileWidth = (int)Math.Min(_tileSize, ImageWidth - pixelX);
+        int tileHeight = (int)Math.Min(_tileSize, ImageHeight - pixelY);
+
+        int bufferSize = tileWidth * tileHeight * BytesPerPixel;
+        byte[] buffer = pool.Rent(bufferSize);
+
+        try
+        {
+            _provider.ReadTileData(pixelX, pixelY, z, tileWidth, tileHeight, buffer);
+
+            var tile = new ImageTile(pixelX, pixelY, tileWidth, tileHeight, 0, PixelFormat);
+            tile.SetPixelData(buffer, bufferSize, pool);
+            return tile;
+        }
+        catch
+        {
+            pool.Return(buffer);
+            throw;
+        }
     }
 
     /// <summary>
