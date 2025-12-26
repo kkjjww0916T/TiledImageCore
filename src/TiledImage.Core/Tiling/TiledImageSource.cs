@@ -1,4 +1,5 @@
-﻿using TiledImage.Core.Types;
+﻿using System.Buffers;
+using TiledImage.Core.Types;
 
 namespace TiledImage.Core.Tiling;
 
@@ -110,13 +111,22 @@ public class TiledImageSource : IDisposable
         int tileHeight = (int)Math.Min(_tileSize, ImageHeight - pixelY);
 
         int bufferSize = tileWidth * tileHeight * BytesPerPixel;
-        byte[] buffer = new byte[bufferSize];
+        var pool = ArrayPool<byte>.Shared;
+        byte[] buffer = pool.Rent(bufferSize);
 
-        _provider.ReadTileData(pixelX, pixelY, z, tileWidth, tileHeight, buffer);
+        try
+        {
+            _provider.ReadTileData(pixelX, pixelY, z, tileWidth, tileHeight, buffer);
 
-        var tile = new ImageTile(pixelX, pixelY, tileWidth, tileHeight, 0, PixelFormat);
-        tile.SetPixelData(buffer);
-        return tile;
+            var tile = new ImageTile(pixelX, pixelY, tileWidth, tileHeight, 0, PixelFormat);
+            tile.SetPixelData(buffer, bufferSize, pool);
+            return tile;
+        }
+        catch
+        {
+            pool.Return(buffer);
+            throw;
+        }
     }
 
     /// <summary>
